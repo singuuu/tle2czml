@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from satellite_czml import satellite_czml
 import xmltodict
 
@@ -15,7 +15,7 @@ def convert_json():
             request_data["line2"]
             ]]
 
-    return satellite_czml(tle_list=tle).get_czml(), 200
+    return Response(satellite_czml(tle_list=tle).get_czml(), 200, mimetype="application/json")
 
 
 @app.post("/tle2czml/xml")
@@ -26,4 +26,4 @@ def convert_xml():
             xmltodict.parse(request.data)["tle"]["line2"]
             ]]
 
-    return satellite_czml(tle_list=tle).get_czml(), 200
+    return Response(satellite_czml(tle_list=tle).get_czml(), 200, mimetype="application/json")
