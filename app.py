@@ -15,7 +15,7 @@ def convert_json():
             request_data["line2"]
             ]]
 
-    return Response(satellite_czml(tle_list=tle).get_czml(), 200, mimetype="application/json")
+    return Response(satellite_czml(tle_list=tle).get_czml(), status=200, mimetype="application/json")
 
 
 @app.post("/tle2czml/xml")
@@ -26,4 +26,4 @@ def convert_xml():
             xmltodict.parse(request.data)["tle"]["line2"]
             ]]
 
-    return Response(satellite_czml(tle_list=tle).get_czml(), 200, mimetype="application/json")
+    return Response(satellite_czml(tle_list=tle).get_czml(), status=200, mimetype="application/json")
