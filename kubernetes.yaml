@@ -1,0 +1,69 @@
+#################
+## TLE to CZML ##
+#################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tle2czml
+  namespace: $K8S_NAMESPACE
+  labels:
+    app.kubernetes.io/name: tle2czml
+    app.kubernetes.io/technology: python
+    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: tle2czml
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tle2czml
+      app.kubernetes.io/technology: python
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tle2czml
+        app.kubernetes.io/technology: python
+        app.kubernetes.io/version: "latest"
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: tle2czml
+    spec:
+      containers:
+      - name: tle2czml
+        image: $HARBOR_REGISTRY/tle2czml/tle2czml:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "2Gi"
+          requests:
+            cpu: "250m"
+            memory: "1Gi"
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: http
+
+---
+
+#########################
+## TLE to CZML Service ##
+#########################
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tle2czml
+  namespace: $K8S_NAMESPACE
+  labels:
+    app.kubernetes.io/name: tle2czml
+    app.kubernetes.io/part-of: tle2czml
+spec:
+  type: NodePort
+  ports:
+  - port: 5000
+    name: tomcat
+    targetPort: 5000
+  selector:
+    app.kubernetes.io/name: tle2czml
+    app.kubernetes.io/component: web
