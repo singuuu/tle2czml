@@ -17,17 +17,7 @@ def convert_json():
     return Response(satellite_czml(tle_list=tle).get_czml(), status=200, mimetype="application/json")
 
 
-@app.post("/tle2czml/xml")
-def convert_xml():
-    tle = [[xmltodict.parse(request.data)["tle"]["line0"],
-            xmltodict.parse(request.data)["tle"]["line1"],
-            xmltodict.parse(request.data)["tle"]["line2"]
-            ]]
-
-    return Response(satellite_czml(tle_list=tle).get_czml(), status=200, mimetype="application/json")
-
-
-@app.post("/tle2czml/multipleJson")
+@app.post("/tle2czml/json/multiple")
 def convert_test():
     multiple_tle = []
 
@@ -48,3 +38,13 @@ def convert_test():
         i += 1
 
     return Response(satellite_czml(tle_list=multiple_tle).get_czml(), status=200, mimetype="application/json")
+
+
+@app.post("/tle2czml/xml")
+def convert_xml():
+    tle = [[xmltodict.parse(request.data)["tle"]["line0"],
+            xmltodict.parse(request.data)["tle"]["line1"],
+            xmltodict.parse(request.data)["tle"]["line2"]
+            ]]
+
+    return Response(satellite_czml(tle_list=tle).get_czml(), status=200, mimetype="application/json")
