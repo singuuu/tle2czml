@@ -8,7 +8,7 @@ import xmltodict
 app = Flask(__name__)
 
 
-@app.post("/tle2czml/json/<start_date>/<end_date>")
+@app.post("/converter/tle2czml/<start_date>/<end_date>/json")
 def convert_test(start_date, end_date):
     multiple_tle = []
 
@@ -35,8 +35,8 @@ def convert_test(start_date, end_date):
                         color=[random.randrange(256) for x in range(3)],
                         marker_scale=12,
                         use_default_image=False,
-                        start_time=datetime.strptime(request.view_args['start_date'], '%Y-%m-%dT%H:%M:%S'),
-                        end_time=datetime.strptime(request.view_args['end_date'], '%Y-%m-%dT%H:%M:%S'),
+                        start_time=datetime.strptime(request.view_args['start_date'], '%Y-%m-%dT%H:%M:%S%z'),
+                        end_time=datetime.strptime(request.view_args['end_date'], '%Y-%m-%dT%H:%M:%S%z'),
                         show_label=True,
                         show_path=True,
                         )
@@ -45,7 +45,7 @@ def convert_test(start_date, end_date):
     return Response(satellite_czml(satellite_list=multiple_sats).get_czml(), status=200, mimetype="application/json")
 
 
-@app.post("/tle2czml/xml")
+@app.post("/converter/tle2czml/xml")
 def convert_xml():
     tle = [[xmltodict.parse(request.data)["tle"]["line0"],
             xmltodict.parse(request.data)["tle"]["line1"],
