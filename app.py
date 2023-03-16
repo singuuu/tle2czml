@@ -53,3 +53,11 @@ def convert_xml():
             ]]
 
     return Response(satellite_czml(tle_list=tle).get_czml(), status=200, mimetype="application/json")
+
+
+@app.get("/converter/tle2czml/help")
+def help():
+    return Response("In order to convert from TLE to CZML you need to attack the endpoint: \n"
+                    "/converter/tle2czml/<start_date>/<end_date>/json \n"
+                    "Sample: http://localhost:5000/converter/tle2czml/2022-01-02T14:34:27+0200/2022-01-02T14"
+                    ":34:27+0200/json", status=200, mimetype="text/text")
